@@ -8,7 +8,7 @@
 */
 
 import { Schema, model } from "mongoose";
-import { CourseModel } from "./course";
+import { CourseModel } from "./course.js";
 
 const eventSchema = new Schema({
   name: {

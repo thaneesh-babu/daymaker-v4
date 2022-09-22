@@ -6,7 +6,7 @@
 */
 
 import { Schema, model } from "mongoose";
-import { CalendarModel } from "./calendar";
+import { CalendarModel } from "./calendar.js";
 
 const courseSchema = new Schema({
   name: {
