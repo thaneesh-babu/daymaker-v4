@@ -4,7 +4,7 @@
 
 ### Getting Started
 
-1. Copy over the `.env-copy` file and rename it to `.env` in the server folder.
+1. Copy over the `.env.example` file and rename it to `.env` in the server folder.
 2. Add yourself as a user in the shared MongoDB Atlas database.
 3. Populate the `MONGODB_URL` field with the connection URL to your local instance.
 
