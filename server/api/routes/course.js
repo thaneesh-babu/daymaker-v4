@@ -8,3 +8,12 @@ courseRoutes.get("/", async (req, res) => {
 
   res.status(200).send(courses);
 });
+
+courseRoutes.post("/", async (req, res) => {
+  if (!req.body) {
+    throw new BadRequestError("Course fields are required");
+  }
+  const course = await CourseModel.create(req.body);
+
+  return res.status(200).send(course);
+});
