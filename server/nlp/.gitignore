@@ -1,0 +1,6 @@
+model-0
+train/__pycache__
+train/data.py
+testing
+__pycache__
+.env
