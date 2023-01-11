@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, Flex, Text, Heading, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput, useEditableControls } from '@chakra-ui/react';
+import { Box, Flex, Text, Heading, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput, useEditableControls, Link } from '@chakra-ui/react';
 import Calendar from 'react-calendar'
 import { useState } from 'react';
 import TimelineCard from './TimelineCard';
@@ -38,6 +38,47 @@ function EditEvents() {
             setMode('calendar')
         }
     }   
+
+
+    /**
+     * useeffect to get all events by date
+     * {
+        "eventId": 0,
+        "date": "string",
+        "eventName": "string",
+        "courseId": 0,
+        "duration": "string"
+        }
+     * 
+     * 
+     * 
+     */
+
+    const mock_data = [
+        {
+            "eventId": 0,
+            "date": "Thu Jan 12 2023 11:30",
+            "eventName": "MATH 1552",
+            "courseId": 0,
+            "duration": "00:30"
+        },
+        {
+            "eventId": 1,
+            "date": "Thu Jan 12 2023 13:40",
+            "eventName": "MATH 1552",
+            "courseId": 0,
+            "duration": "00:45"
+        },
+        {
+            "eventId": 2,
+            "date": "Thu Jan 12 2023 15:30",
+            "eventName": "CS 1331",
+            "courseId": 1,
+            "duration": "00:20"
+        }
+    ]
+
+    
     
 
     return (
@@ -55,37 +96,44 @@ function EditEvents() {
                 <Calendar onClickDay={changeMode} />
             </Box>
         : 
-            <Box
+            <Flex  
+                w="60%"
+                alignItems="center"
+                py="2%"
+                flexDirection="column"
                 h="90%" 
-                w="50%" 
                 border="0.5px solid gray"
                 borderRadius="25px" 
-                alignItems="center"
-                boxShadow="2px 2px 5px">
-                
-                <Flex  
-                    w="100%"
-                    alignItems="center"
-                    py="2%"
-                    flexDirection="column"
-                    > 
-                    <Text 
-                        fontSize="2.5rem" 
-                        fontWeight="bold" 
-                        w="75%"
-                        onClick={changeMode}
-                        borderBottom="medium solid gray"
-                        > {day} 
-                    </Text>
-                    <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen}} >
-                    <Flex flexDirection="column" w="100%" overflowY="scroll" scrollBehavior="smooth">
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" />
-                        <TimelineCard time={['13:45','15:00']} title="MATH 1552" desc="square regressive factorials" />
+                boxShadow="2px 2px 5px"
+                > 
+                <Text 
+                    fontSize="2.5rem" 
+                    fontWeight="bold" 
+                    w="75%"
+                    onClick={changeMode}
+                    borderBottom="medium solid gray"
+                    > {day} 
+                </Text>
+                <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen}} >
+                    <Flex flexDirection="column" w="100%" h="100%" overflowY="auto">
+                        {mock_data.map((d) => {
+                            let startTime = d.date.split(" ")[4];
+                            let endTime = startTime.split(":")[1]  ;
+                            <TimelineCard time={['11:00','11:30']} title={d.eventName} desc="square regressive factorials" isLast={false} />
+                        })}
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
+                        <TimelineCard time={['13:45','15:00']} title="MATH 1552" desc="square regressive factorials" isLast={true}/>
                     </Flex>
-                    </EditContext.Provider>
-                </Flex>
-                
-            </Box>}
+                </EditContext.Provider>
+            </Flex>}
+            <Link to='/'>
+                <Button pos='absolute' top='0' left='0' p='2%' m='2%' >back</Button>
+            </Link>
             <Modal isOpen={isOpen} >
                 <Flex flexDirection="column" h="40vh" w="70vw" pos="absolute"
                         left="50%"

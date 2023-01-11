@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { EditContext } from './EditEvents';
 
-function TimelineCard({time, title, desc}) {
+function TimelineCard({time, title, desc, isLast}) {
     /**
      * Card 
      *      left panel
@@ -41,12 +41,12 @@ function TimelineCard({time, title, desc}) {
     }
 
     return ( 
-        <Flex w="100%" h="20vh"  >
+        <Flex w="100%" h="25vh"  >
             <Flex flexDirection="column" w="10%" alignItems="center" >
                 <Box className='dot' h="15px" w="15px" borderRadius="15px" bgColor="blackAlpha.400" ></Box>
-                <Box className='line' h="100%" w="4px" bgColor="blackAlpha.400"></Box>
+                <Box className='line' h="100%" w="4px" bgColor="blackAlpha.400" hidden={isLast} ></Box>
             </Flex>
-            <Flex flexDirection="column" w="90%" my="2%" >
+            <Flex flexDirection="column" w="90%" my="1%" >
                 <Flex h="20%" >
                     <Text borderRadius="25px" marginLeft="4%" h="100%" color="white" bgColor="blue.300" px="2%"> {cardTime[0]} to {cardTime[1]} </Text>
                 </Flex>
