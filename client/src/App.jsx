@@ -1,13 +1,13 @@
 import "./App.css";
-import FileUpload from "./components/FileUpload";
-import EditEvents from "./components/EditEvents/EditEvents";
 import { Routes, Route } from "react-router-dom";
+import UploadPage from "./pages/UploadPage";
+import EditEventsPage from "./pages/EditEventsPage";
 
 function App() {
     return (
         <Routes>
-            <Route path="/" element={<FileUpload />} />
-            <Route path="/edit" element={<EditEvents />} />
+            <Route path="/" element={<UploadPage />} />
+            <Route path="/edit" element={<EditEventsPage />} />
         </Routes>
     );
 }

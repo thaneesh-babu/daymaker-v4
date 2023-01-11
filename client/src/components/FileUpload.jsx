@@ -1,30 +1,31 @@
-import { Button, Box } from "@chakra-ui/react";
+import { Button, Box, Square } from "@chakra-ui/react";
 import { AttachmentIcon } from "@chakra-ui/icons";
-import "../App.css";
 import { useRef } from "react";
 
 // https://medium.com/web-dev-survey-from-kyoto/how-to-customize-the-file-upload-button-in-react-b3866a5973d8
 export default function FileUpload(props) {
-    const { formInputRef = useRef() } = { ...props };
+    const { fileInputRef = useRef() } = { ...props };
     const WrapperHandler = () => {
-        formInputRef.current.click();
+        fileInputRef.current.click();
     };
     const {
-        formInputChangeHandler = (event) => {
-            console.log(formInputRef.current.files);
+        onChangeHandler = (event) => {
+            console.log(fileInputRef.current.files);
         },
     } = { ...props };
 
     return (
         <Box>
-            <Button onClick={WrapperHandler}>
-                Upload File <AttachmentIcon ml={3} />
-            </Button>
+            <Square size={150}as={Button} onClick={WrapperHandler}>
+                <Box>
+                    Upload File <AttachmentIcon ml={2} />
+                </Box>
+            </Square>
             <input
-                onChange={formInputChangeHandler}
+                onChange={onChangeHandler}
                 style={{ display: "none" }}
                 type="file"
-                ref={formInputRef}
+                ref={fileInputRef}
             />
         </Box>
     );
