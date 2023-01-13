@@ -11,4 +11,4 @@ defaultRouter.use("/users", userRoutes);
 defaultRouter.use("/events", eventRoutes);
 defaultRouter.use("/courses", courseRoutes);
 defaultRouter.use("/calendars", calendarRoutes);
-
+defaultRouter.use("/file", fileRoutes);
