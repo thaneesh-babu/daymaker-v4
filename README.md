@@ -23,7 +23,9 @@
 
 ## Server Breakdown
 
-TODO
+### NLP
+
+- 
 
 ## Archive
 
