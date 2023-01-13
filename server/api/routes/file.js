@@ -1,6 +1,6 @@
 import express from "express";
 import { spawn } from "child_process";
-const multer = require("multer");
+import multer from "multer";
 export const fileRoutes = express.Router();
 
 const storage = multer.diskStorage({
