@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: `http://localhost:${process.env.CLIENT_PORT}`,
+    origin: `http://127.0.0.1:${process.env.CLIENT_PORT}`,
   })
 );
 
