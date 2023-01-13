@@ -25,7 +25,7 @@
 
 ### NLP
 
--   Run `pip install -r requirements` after navigating to `server/nlp`.
+-   Run `pip install -r requirements.txt` after navigating to `server/nlp`.
 -   Install tesseract-ocr, refer [this](https://github.com/tesseract-ocr/tesseract) for installation.
 -   Copy over the `.env.example` file and rename it to `.env` and fill out the path to your tesseract installation.
 -   Train the model by running `python train/main.py`.
