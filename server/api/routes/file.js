@@ -24,10 +24,8 @@ fileRoutes.post(
         }
         console.log(file.filename);
         res.send(file);
-        // run python script and get the events
         const pythonProc = spawn("python", ["../../nlp/run.py", file.filename]);
         pythonProc.stdout.on("data", (data) => {
-            // data here is events
             events = data;
         });
         return res.status(200).send(events);
