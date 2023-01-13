@@ -51,7 +51,7 @@ for ent in doc.ents:
 
 # Saving model
 
-output_dir = Path('../model-0')
+output_dir = Path('model-0')
 if not output_dir.exists():
     output_dir.mkdir()
 nlp.to_disk(output_dir)

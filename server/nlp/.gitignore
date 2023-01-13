@@ -1,4 +1,5 @@
 model-0
+inputs
 train/__pycache__
 train/data.py
 testing
