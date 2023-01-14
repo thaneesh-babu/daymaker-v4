@@ -10,7 +10,8 @@ export default function UploadPage() {
     const navigate = useNavigate();
     const toast = useToast();
     const onChangeHandler = async () => {
-        const selectedFile = fileInputRef.current.files[0]
+        const selectedFile = fileInputRef.current.files[0];
+        console.log("selected file", selectedFile);
         try {
             if (selectedFile.name.split(".").pop().toLowerCase() !== "pdf") {
                 throw "type error";
@@ -18,23 +19,32 @@ export default function UploadPage() {
             // https://stackoverflow.com/questions/61154675/how-can-i-upload-file-from-react-to-express-server
             const data = new FormData();
             data.append("file", selectedFile);
-            const res = await axios.post("http://localhost:5000/file/fileUpload", data);
+            const res = await axios.post(
+                "http://localhost:5000/file/",
+                data
+            );
             console.log(res);
-            navigate("/edit")
+            navigate("/edit");
         } catch (e) {
             const options = {
                 title: e.toString(),
-                description: e == "type error" ? "PDFs only rn" : "bruh bruh bruh",
+                description:
+                    e == "type error" ? "PDFs only rn" : "bruh bruh bruh",
                 status: "error",
                 duration: 6000,
                 isClosable: true,
-            }
-            toast(options)
+            };
+            toast(options);
         }
-    }
-    return <>
-        <Center width="100%" h="100vh">
-            <FileUpload fileInputRef={fileInputRef} onChangeHandler={onChangeHandler} />
-        </Center>
-    </>
+    };
+    return (
+        <>
+            <Center width="100%" h="100vh">
+                <FileUpload
+                    fileInputRef={fileInputRef}
+                    onChangeHandler={onChangeHandler}
+                />
+            </Center>
+        </>
+    );
 }
