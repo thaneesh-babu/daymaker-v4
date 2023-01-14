@@ -5,22 +5,11 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { EditContext } from './EditEvents';
 
-function TimelineCard({time, title, desc, isLast}) {
-    /**
-     * Card 
-     *      left panel
-     *          dot
-     *          line only present when event below
-     *      right panel
-     *          time in a bubble
-     *          actual card
-     */
-
+function TimelineCard({id, time, title, desc, isLast, data}) {
     const [cardTime, setCardTime] = useState("");
     const [cardTitle, setCardTitle] = useState("");
     const [cardDesc, setCardDesc] = useState("");
-    const {setModalTime, setModalTitle, setModalDesc, onOpen, onClose, isOpen} = useContext(EditContext);
-    
+    const {setModalTime, setModalTitle, setModalDesc, onOpen, onClose, isOpen, setModalID} = useContext(EditContext);
 
     useEffect(() => {
         setCardTime(time)
@@ -36,6 +25,7 @@ function TimelineCard({time, title, desc, isLast}) {
             setModalTime(cardTime);
             setModalTitle(cardTitle);
             setModalDesc(cardDesc);
+            setModalID(id);
         }
         
     }
@@ -56,7 +46,7 @@ function TimelineCard({time, title, desc, isLast}) {
                     borderRadius="25px" boxShadow="2px 2px 3px gray" 
                     textAlign="left" 
                     onClick={openModal} >
-                    <Heading> {cardTitle} </Heading>
+                    <Heading> {data.eventName} </Heading>
                     <Text> {cardDesc} </Text>
                 </Flex>
             </Flex>

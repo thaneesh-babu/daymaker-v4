@@ -1,29 +1,26 @@
-import React, { Component } from 'react';
-import { Box, Flex, Text, Heading, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput, useEditableControls, Link } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Flex, Text, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput} from '@chakra-ui/react';
 import Calendar from 'react-calendar'
 import { useState } from 'react';
 import TimelineCard from './TimelineCard';
 import { createContext } from 'react';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
+import { useEffect } from 'react';
 
 export let EditContext = createContext();
 
 function EditEvents() {
-    /**
-     * NOTES: 
-     * has multiple modes
-     * react-calendar, react-time-range-picker react-date-picker
-     * make my own day view
-     * click on events to open an edit modal
-     */
-
     // mode: calendar | day
     const [mode, setMode] = useState('calendar')
     const [day, setDay] = useState("")
+    const [eventData, setEventData] = useState([]);
     const [modalTitle, setModalTitle] = useState("")
     const [modalTime, setModalTime] = useState(['10:00', '11:00'])
     const [modalDesc, setModalDesc] = useState("")
+    const [modalID, setModalID] = useState("") 
     const {onOpen, isOpen, onClose} = useDisclosure();
+    //const navigation = useNavigation();
+    
 
     const changeMode = (value) => {
         if (mode === 'calendar') {
@@ -39,33 +36,32 @@ function EditEvents() {
         }
     }   
 
+    useEffect(() => {
+        setEventData(mock_data);
+    }, [])
 
-    /**
-     * useeffect to get all events by date
-     * {
-        "eventId": 0,
-        "date": "string",
-        "eventName": "string",
-        "courseId": 0,
-        "duration": "string"
+    useEffect(() => {
+        for (let i = 0; i < eventData.length; i++) {
+            if (i === modalID) {
+                let temp = eventData;
+                temp[i].eventName = modalTitle;
+            }
         }
-     * 
-     * 
-     * 
-     */
+    }, [modalTitle, modalTime, modalDesc])
 
+    // dont change server data, duplicate it and change it there
     const mock_data = [
         {
             "eventId": 0,
             "date": "Thu Jan 12 2023 11:30",
-            "eventName": "MATH 1552",
+            "eventName": "PHYS 2211",
             "courseId": 0,
             "duration": "00:30"
         },
         {
             "eventId": 1,
             "date": "Thu Jan 12 2023 13:40",
-            "eventName": "MATH 1552",
+            "eventName": "PHYS 2211",
             "courseId": 0,
             "duration": "00:45"
         },
@@ -77,9 +73,6 @@ function EditEvents() {
             "duration": "00:20"
         }
     ]
-
-    
-    
 
     return (
         <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center" >
@@ -114,26 +107,27 @@ function EditEvents() {
                     borderBottom="medium solid gray"
                     > {day} 
                 </Text>
-                <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen}} >
+                <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen, setModalID, eventData}} >
                     <Flex flexDirection="column" w="100%" h="100%" overflowY="auto">
-                        {mock_data.map((d) => {
+                        {eventData.map((d, i) => {
+                            // calculates the end time using date and duration
                             let startTime = d.date.split(" ")[4];
-                            let endTime = startTime.split(":")[1]  ;
-                            <TimelineCard time={['11:00','11:30']} title={d.eventName} desc="square regressive factorials" isLast={false} />
+                            let mins = parseInt(startTime.split(":")[1]) + parseInt(d.duration.split(":")[1]);
+                            let hrs = parseInt(startTime.split(":")[0])
+                            let endTime;
+                            if (mins >= 60) {
+                                hrs++;
+                                mins = mins % 60;
+                            } 
+                            endTime = (hrs > 9 ? hrs : "0" + hrs) +  ":" + (mins > 9 ? mins : "0" + mins);
+                            return <TimelineCard id={d.eventId} time={[startTime, endTime]} title={d.eventName} desc="square" isLast={i == eventData.length - 1} data={eventData[i]} />
                         })}
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" isLast={false} />
-                        <TimelineCard time={['13:45','15:00']} title="MATH 1552" desc="square regressive factorials" isLast={true}/>
                     </Flex>
                 </EditContext.Provider>
             </Flex>}
-            <Link to='/'>
-                <Button pos='absolute' top='0' left='0' p='2%' m='2%' >back</Button>
-            </Link>
+            <Button pos='absolute' top='0' left='0' p='2%' m='2%'> 
+                back
+            </Button>
             <Modal isOpen={isOpen} >
                 <Flex flexDirection="column" h="40vh" w="70vw" pos="absolute"
                         left="50%"
