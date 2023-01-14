@@ -1,4 +1,3 @@
-from parsepdf import syllabus_module
 import glob
 import os
 from PIL import Image
@@ -10,10 +9,10 @@ load_dotenv()
 pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT-PATH')
 
 events = []
-images = glob.glob("inputs/" + syllabus_module + "/*.jpg")
 
 
 def ocr():
+    images = glob.glob("inputs/" + "/*.jpg")
     for image in images:
         img = Image.open(image)
         data = str(pytesseract.image_to_string(
