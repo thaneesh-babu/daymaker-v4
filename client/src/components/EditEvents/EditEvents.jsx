@@ -1,29 +1,26 @@
-import React, { Component } from 'react';
-import { Box, Flex, Text, Heading, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput, useEditableControls } from '@chakra-ui/react';
+import React from 'react';
+import { Box, Flex, Text, Button, useDisclosure, Modal, Editable, EditablePreview, EditableInput} from '@chakra-ui/react';
 import Calendar from 'react-calendar'
 import { useState } from 'react';
 import TimelineCard from './TimelineCard';
 import { createContext } from 'react';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
+import { useEffect } from 'react';
 
 export let EditContext = createContext();
 
 function EditEvents() {
-    /**
-     * NOTES: 
-     * has multiple modes
-     * react-calendar, react-time-range-picker react-date-picker
-     * make my own day view
-     * click on events to open an edit modal
-     */
-
     // mode: calendar | day
     const [mode, setMode] = useState('calendar')
     const [day, setDay] = useState("")
+    const [eventData, setEventData] = useState([]);
     const [modalTitle, setModalTitle] = useState("")
     const [modalTime, setModalTime] = useState(['10:00', '11:00'])
     const [modalDesc, setModalDesc] = useState("")
+    const [modalID, setModalID] = useState("") 
     const {onOpen, isOpen, onClose} = useDisclosure();
+    //const navigation = useNavigation();
+    
 
     const changeMode = (value) => {
         if (mode === 'calendar') {
@@ -38,7 +35,44 @@ function EditEvents() {
             setMode('calendar')
         }
     }   
-    
+
+    useEffect(() => {
+        setEventData(mock_data);
+    }, [])
+
+    useEffect(() => {
+        for (let i = 0; i < eventData.length; i++) {
+            if (i === modalID) {
+                let temp = eventData;
+                temp[i].eventName = modalTitle;
+            }
+        }
+    }, [modalTitle, modalTime, modalDesc])
+
+    // dont change server data, duplicate it and change it there
+    const mock_data = [
+        {
+            "eventId": 0,
+            "date": "Thu Jan 12 2023 11:30",
+            "eventName": "PHYS 2211",
+            "courseId": 0,
+            "duration": "00:30"
+        },
+        {
+            "eventId": 1,
+            "date": "Thu Jan 12 2023 13:40",
+            "eventName": "PHYS 2211",
+            "courseId": 0,
+            "duration": "00:45"
+        },
+        {
+            "eventId": 2,
+            "date": "Thu Jan 12 2023 15:30",
+            "eventName": "CS 1331",
+            "courseId": 1,
+            "duration": "00:20"
+        }
+    ]
 
     return (
         <Flex w="100vw" h="100vh" alignItems="center" justifyContent="center" >
@@ -55,37 +89,45 @@ function EditEvents() {
                 <Calendar onClickDay={changeMode} />
             </Box>
         : 
-            <Box
+            <Flex  
+                w="60%"
+                alignItems="center"
+                py="2%"
+                flexDirection="column"
                 h="90%" 
-                w="50%" 
                 border="0.5px solid gray"
                 borderRadius="25px" 
-                alignItems="center"
-                boxShadow="2px 2px 5px">
-                
-                <Flex  
-                    w="100%"
-                    alignItems="center"
-                    py="2%"
-                    flexDirection="column"
-                    > 
-                    <Text 
-                        fontSize="2.5rem" 
-                        fontWeight="bold" 
-                        w="75%"
-                        onClick={changeMode}
-                        borderBottom="medium solid gray"
-                        > {day} 
-                    </Text>
-                    <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen}} >
-                    <Flex flexDirection="column" w="100%" overflowY="scroll" scrollBehavior="smooth">
-                        <TimelineCard time={['11:00','11:30']} title="MATH 1552" desc="square regressive factorials" />
-                        <TimelineCard time={['13:45','15:00']} title="MATH 1552" desc="square regressive factorials" />
+                boxShadow="2px 2px 5px"
+                > 
+                <Text 
+                    fontSize="2.5rem" 
+                    fontWeight="bold" 
+                    w="75%"
+                    onClick={changeMode}
+                    borderBottom="medium solid gray"
+                    > {day} 
+                </Text>
+                <EditContext.Provider value={{setModalTitle, setModalTime, setModalDesc, onOpen, onClose, isOpen, setModalID, eventData}} >
+                    <Flex flexDirection="column" w="100%" h="100%" overflowY="auto">
+                        {eventData.map((d, i) => {
+                            // calculates the end time using date and duration
+                            let startTime = d.date.split(" ")[4];
+                            let mins = parseInt(startTime.split(":")[1]) + parseInt(d.duration.split(":")[1]);
+                            let hrs = parseInt(startTime.split(":")[0])
+                            let endTime;
+                            if (mins >= 60) {
+                                hrs++;
+                                mins = mins % 60;
+                            } 
+                            endTime = (hrs > 9 ? hrs : "0" + hrs) +  ":" + (mins > 9 ? mins : "0" + mins);
+                            return <TimelineCard id={d.eventId} time={[startTime, endTime]} title={d.eventName} desc="square" isLast={i == eventData.length - 1} data={eventData[i]} />
+                        })}
                     </Flex>
-                    </EditContext.Provider>
-                </Flex>
-                
-            </Box>}
+                </EditContext.Provider>
+            </Flex>}
+            <Button pos='absolute' top='0' left='0' p='2%' m='2%'> 
+                back
+            </Button>
             <Modal isOpen={isOpen} >
                 <Flex flexDirection="column" h="40vh" w="70vw" pos="absolute"
                         left="50%"
