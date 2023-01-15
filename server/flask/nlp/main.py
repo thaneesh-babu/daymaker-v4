@@ -3,14 +3,15 @@ import json
 import string
 from pathlib import Path
 from dateutil.parser import ParserError, parse
-output_dir = Path('model-0')
+output_dir = Path('nlp/model-0')
 nlp = spacy.load(output_dir)
 
 
 def model(line, events):
     try:
         dateObject = parse(line, fuzzy=True)
-        if (str(dateObject)[:4] < '2000' or str(dateObject)[:4] > '2100'): return
+        if (str(dateObject)[:4] < '2000' or str(dateObject)[:4] > '2100'):
+            return
         extraneousTextTuple = parse(line, fuzzy_with_tokens=True)[1]
         extraneousText = ""
         for s in extraneousTextTuple:
