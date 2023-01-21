@@ -1,7 +1,7 @@
 model-0
 inputs
 train/__pycache__
-train/data.py
+# train/data.py
 testing
 __pycache__
 .env
