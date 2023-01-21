@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, session
+from flask import Flask, request, session, jsonify
 from flask_cors import CORS, cross_origin
 
 from werkzeug.utils import secure_filename
@@ -25,7 +25,7 @@ def upload():
     file.save(destination)
     session['uploadFilePath'] = destination
     events = run(file.filename, syllabus_module)
-    return events
+    return jsonify(events)
 
 
 if __name__ == '__main__':
