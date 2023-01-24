@@ -3,7 +3,7 @@ import os
 
 def parse(filename, syllabus_module):
     pdf = r"nlp/inputs/" + syllabus_module + "/" + filename
-    if os.getenv("POPLER-NOT-IN-PATH").lower() in ('true', '1', 't'):
+    if os.getenv("POPPLER-NOT-IN-PATH").lower() in ('true', '1', 't'):
         pages = convert_from_path(pdf, 350, poppler_path=r"D:\Programs\Poppler\poppler-0.68.0\bin")
     else:
         pages = convert_from_path(pdf, 350)
