@@ -15,17 +15,22 @@
 -   `npm start` (Run the client)
 -   Navigate to `localhost:3000` to view the application
 
-#### To run server:
+#### To run express server:
 
--   `cd server` (Navigate to server folder)
+-   `cd server/express` (Navigate to server folder)
 -   `npm i` (Make sure you have dependencies installed)
 -   `npm start` (Run the server)
+
+#### To run flask server:
+
+-   `cd server/flask` (Navigate to server folder)
+-   `pip install -r requirements.txt` (Make sure you have dependencies installed)
+-   `python3 app.py` (Run the server)
 
 ## Server Breakdown
 
 ### NLP
 
--   Run `pip install -r requirements.txt` after navigating to `server/nlp`.
 -   Install tesseract-ocr, refer [this](https://github.com/tesseract-ocr/tesseract) for installation.
 -   Copy over the `.env.example` file and rename it to `.env` and fill out the path to your tesseract installation.
 -   Train the model by running `python train/main.py`.
